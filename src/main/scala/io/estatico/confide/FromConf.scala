@@ -1,21 +1,21 @@
 package io.estatico.confide
 
-import com.typesafe.config.{Config, ConfigFactory, ConfigOrigin}
 import com.typesafe.config.ConfigException.WrongType
+import com.typesafe.config.{Config, ConfigFactory, ConfigOrigin}
 import shapeless.{LabelledGeneric, Lazy}
 
 import scala.util.control.NonFatal
 
-/** Type class for decoding values of type [[A]] from a [[Config]]. */
+/** Type class for decoding values of type `A` from a `Config`. */
 trait FromConf[A] {
 
-  /** Decode the value in `config` at `path` as type [[A]]. */
+  /** Decode the value in `config` at `path` as type `A`. */
   def get(config: Config, path: String): A
 
   /**
-   * Create a new [[FromConf]] by mapping `f` over a decoded value.
+   * Create a new `FromConf` by mapping `f` over a decoded value.
    * If an exception is thrown in in the call to `f`, the exception will
-   * be rethrown as a [[WrongType]], specifying the path and cause.
+   * be rethrown as a `WrongType`, specifying the path and cause.
    */
   def map[B](f: A => B): FromConf[B] = FromConf.instance((c, p) =>
     try {
@@ -38,7 +38,7 @@ object FromConf {
     override def get(config: Config, path: String): A = f(config, path)
   }
 
-  /** Similar to [[instance]] except expects a curried function. */
+  /** Similar to `instance` except expects a curried function. */
   def instance2[A](f: Config => String => A): FromConf[A] = new FromConf[A] {
     override def get(config: Config, path: String): A = f(config)(path)
   }
@@ -48,7 +48,7 @@ object FromConf {
     override def get(config: Config, path: String): A = getOrParse(config, path, f)
   }
 
-  /** Combines [[instance2]] and [[instanceP]]. */
+  /** Combines `instance2` and `instanceP`. */
   def instance2P[A](f: Config => String => A): FromConf[A] = new FromConf[A] {
     override def get(config: Config, path: String): A = getOrParse(config, path, f(_)(_))
   }
@@ -89,7 +89,7 @@ object FromConf {
 }
 
 /**
- * Used internally to simplify calling [[FromConf.derive]] by only requiring a
+ * Used internally to simplify calling `FromConf.derive` by only requiring a
  * single type param, inferring the HList representation.
  */
 abstract class DerivedFromConf[A] extends FromConf[A]
