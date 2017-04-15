@@ -1,3 +1,5 @@
+organization in ThisBuild := "io.estatico"
+
 name := "confide"
 
 scalaVersion := "2.12.1"
