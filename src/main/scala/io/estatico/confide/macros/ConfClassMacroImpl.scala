@@ -3,25 +3,14 @@ package macros
 
 import macrocompat.bundle
 
-import scala.annotation.StaticAnnotation
 import scala.reflect.macros.blackbox
 
-/**
- * Class macro annotation which tries to automatically derive an instance
- * of `ConfGet` for a case class and defines it in the companion object.
- * All of the fields of the case class must have an instance of `ConfGet`
- * for their respective types.
- */
-class Conf extends StaticAnnotation {
-  def macroTransform(annottees: Any*): Any = macro ConfClassMacroImpl.confDecoder
-}
-
 @bundle
-final class ConfClassMacroImpl(val c: blackbox.Context) {
+private[confide] final class ConfClassMacroImpl(val c: blackbox.Context) {
 
   import c.universe._
 
-  def confDecoder(annottees: Tree*): Tree = annottees match {
+  def confClass(annottees: Tree*): Tree = annottees match {
     case List(clsDef: ClassDef) if isCaseClass(clsDef) =>
       q"""
         $clsDef

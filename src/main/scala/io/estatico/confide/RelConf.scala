@@ -1,11 +1,15 @@
 package io.estatico.confide
 
-import com.typesafe.config.Config
+import com.typesafe.config.{Config, ConfigFactory}
 
 /** Base trait for building objects referring to typesafe config values. */
 trait RelConf {
 
   protected def config: Config
+
+  protected def load(): Config = ConfigFactory.load()
+
+  protected def load(resourceBaseName: String): Config = ConfigFactory.load(resourceBaseName)
 
   /** Decode a config value at the specified path. */
   protected def getAtPath[A](path: String)(implicit ev: FromConf[A]): A = ev.get(config, path)
@@ -24,4 +28,3 @@ trait RelConf {
     override val config = parent.getConfig(path)
   }
 }
-

@@ -1,7 +1,5 @@
 package io.estatico.confide
 
-import io.estatico.confide.instances._
-import io.estatico.confide.macros.Conf
 import org.scalatest.{Matchers, PropSpec}
 import org.scalatest.prop.PropertyChecks
 import com.typesafe.config.ConfigFactory
