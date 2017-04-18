@@ -51,3 +51,11 @@ config values of type `A`. Derivation leverages the wonderful
 [shapeless](https://github.com/milessabin/shapeless) library.
 All the `@Conf` macro does is inject an implicit `FromConf.derive` into the
 case class' companion object.
+
+```scala
+scala> val c = new AppConfig
+c: AppConfig = AppConfig@8ff2adc
+
+scala> c.api
+res0: ApiConf = ApiConf(CacheConf(true,300000000000 nanoseconds),List(Hello, Hola, Bonjour))
+```
