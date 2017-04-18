@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 import com.typesafe.config.ConfigList
-import io.estatico.confide.FromConf
+import io.estatico.confide.{FromConf, FromConfObj}
 import shapeless._
 import shapeless.labelled.FieldType
 
@@ -14,15 +14,15 @@ import scala.concurrent.duration.FiniteDuration
 
 trait ConfideInstances {
 
-  implicit val hnil: FromConf[HNil] = FromConf.instance((_, _) => HNil)
+  implicit val hnil: FromConfObj[HNil] = FromConfObj.instance(_ => HNil)
 
   implicit def hlist[K <: Symbol, H, T <: HList](
     implicit
     w: Witness.Aux[K],
-    cgH: FromConf[H],
-    cgT: FromConf[T]
-  ): FromConf[FieldType[K, H] :: T] = FromConf.instance((c, p) =>
-    labelled.field[K](cgH.get(c, p + "." + w.value.name)) :: cgT.get(c, p)
+    fcH: FromConf[H],
+    fcT: FromConfObj[T]
+  ): FromConfObj[FieldType[K, H] :: T] = FromConfObj.instance(o =>
+    labelled.field[K](fcH.get(o.toConfig, w.value.name)) :: fcT.decodeObject(o)
   )
 
   implicit val string: FromConf[String] = FromConf.instance2(_.getString)

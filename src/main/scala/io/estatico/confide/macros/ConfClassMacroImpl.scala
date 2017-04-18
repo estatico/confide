@@ -34,16 +34,16 @@ private[confide] final class ConfClassMacroImpl(val c: blackbox.Context) {
     case _ => c.abort(c.enclosingPosition, s"Only case classes are supported.")
   }
 
-  private val FromConfClass = typeOf[FromConf[_]].typeSymbol.asType
-  private val FromConfObj = FromConfClass.companion
+  private val FromConfObjClass = typeOf[FromConfObj[_]].typeSymbol.asType
+  private val FromConfObjComp = FromConfObjClass.companion
 
   private def isCaseClass(clsDef: ClassDef) = clsDef.mods.hasFlag(Flag.CASE)
 
   private def confGet(clsDef: ClassDef): Tree = {
     if (clsDef.tparams.nonEmpty) c.abort(c.enclosingPosition, s"Type parameters are not supported")
     val typeName = clsDef.name
-    val confGetName = TermName("confGet" + typeName.decodedName)
-    q"implicit val $confGetName: $FromConfClass[$typeName] = $FromConfObj.derive[$typeName]"
+    val instName = TermName("fromConfObj" + typeName.decodedName)
+    q"implicit val $instName: $FromConfObjClass[$typeName] = $FromConfObjComp.derive[$typeName]"
   }
 }
 

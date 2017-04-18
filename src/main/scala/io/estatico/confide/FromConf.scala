@@ -2,7 +2,6 @@ package io.estatico.confide
 
 import com.typesafe.config.ConfigException.WrongType
 import com.typesafe.config.{Config, ConfigFactory, ConfigOrigin}
-import shapeless.{LabelledGeneric, Lazy}
 
 import scala.util.control.NonFatal
 
@@ -79,28 +78,6 @@ object FromConf {
       f(config, path)
     } catch {
       case _: WrongType => parseValue(config.origin, path, f, config.getString(path))
-    }
-  }
-
-  /** Derive an instance of ConfGet for a case class. */
-  def derive[A](implicit cg: Lazy[DerivedFromConf[A]]): FromConf[A] = cg.value
-
-  def const[A](a: A): FromConf[A] = instance((_, _) => a)
-}
-
-/**
- * Used internally to simplify calling `FromConf.derive` by only requiring a
- * single type param, inferring the HList representation.
- */
-abstract class DerivedFromConf[A] extends FromConf[A]
-object DerivedFromConf {
-  implicit def derived[A, R](
-    implicit
-    g: LabelledGeneric.Aux[A, R],
-    cg: Lazy[FromConf[R]]
-  ): DerivedFromConf[A] = new DerivedFromConf[A] {
-    override def get(config: Config, path: String): A = {
-      g.from(cg.value.get(config, path))
     }
   }
 }

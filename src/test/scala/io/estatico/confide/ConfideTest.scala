@@ -79,7 +79,17 @@ class ConfideTest extends PropSpec with PropertyChecks with Matchers {
   }
 
   property("@Conf macro") {
-    val parsed = ConfigFactory.parseString("""
+
+    @Conf case class Meal(breakfast: Breakfast)
+    @Conf case class Breakfast(
+      name: String,
+      spam: Spam,
+      eggs: List[Egg]
+    )
+    @Conf case class Spam(slices: Int)
+    @Conf case class Egg(scrambled: Boolean)
+
+    val config = ConfideFactory.parseString[Meal]("""
       breakfast {
         name: monty
         spam {
@@ -92,26 +102,13 @@ class ConfideTest extends PropSpec with PropertyChecks with Matchers {
       }
     """)
 
-    @Conf case class Breakfast(
-      name: String,
-      spam: Spam,
-      eggs: List[Egg]
-    )
-    @Conf case class Spam(slices: Int)
-    @Conf case class Egg(scrambled: Boolean)
-
-    val c = new RelConf {
-      val config = parsed
-      val breakfast = get[Breakfast]
-    }
-
-    c.breakfast shouldEqual Breakfast(
+    config shouldEqual Meal(Breakfast(
       name = "monty",
       spam = Spam(slices = 4),
       eggs = List(
         Egg(scrambled = true),
         Egg(scrambled = false)
       )
-    )
+    ))
   }
 }
