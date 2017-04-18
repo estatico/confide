@@ -1,5 +1,7 @@
 # Confide
 
+[![Build Status](https://travis-ci.org/estatico/confide.svg?branch=master)](https://travis-ci.org/estatico/confide)
+
 Automatic configuration decoding for Scala
 
 ## Usage
