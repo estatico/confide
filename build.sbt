@@ -52,6 +52,16 @@ scmInfo := Some(
   )
 )
 developers := List(
-  Developer("caryrobbins", "Cary Robbins", "carymrobbins@gmail.com",
-    url("http://caryrobbins.com"))
+  Developer("caryrobbins", "Cary Robbins", "carymrobbins@gmail.com", url("http://caryrobbins.com"))
 )
+credentials ++= (
+  for {
+    username <- Option(System.getenv().get("SONATYPE_USERNAME"))
+    password <- Option(System.getenv().get("SONATYPE_PASSWORD"))
+  } yield Credentials(
+    "Sonatype Nexus Repository Manager",
+    "oss.sonatype.org",
+    username,
+    password
+  )
+).toSeq
