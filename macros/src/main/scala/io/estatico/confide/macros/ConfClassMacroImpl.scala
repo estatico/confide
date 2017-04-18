@@ -1,12 +1,12 @@
-package io.estatico.confide
-package macros
+package io.estatico.confide.macros
 
+import io.estatico.confide.FromConfObj
 import macrocompat.bundle
 
 import scala.reflect.macros.blackbox
 
 @bundle
-private[confide] final class ConfClassMacroImpl(val c: blackbox.Context) {
+private[confide] final class ConfClassMacros(val c: blackbox.Context) {
 
   import c.universe._
 

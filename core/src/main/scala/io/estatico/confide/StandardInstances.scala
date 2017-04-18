@@ -1,18 +1,15 @@
-package io.estatico.confide.instances
+package io.estatico.confide
 
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import java.util.concurrent.TimeUnit
 
 import com.typesafe.config.ConfigList
-import io.estatico.confide.{FromConf, FromConfObj}
 import shapeless._
 import shapeless.labelled.FieldType
 
 import scala.collection.JavaConverters._
 import scala.concurrent.duration.FiniteDuration
 
-trait ConfideInstances {
+trait StandardInstances {
 
   implicit val hnil: FromConfObj[HNil] = FromConfObj.instance(_ => HNil)
 
@@ -36,10 +33,6 @@ trait ConfideInstances {
   implicit val double: FromConf[Double] = number.map(_.doubleValue)
 
   implicit val boolean: FromConf[Boolean] = FromConf.instance2(_.getBoolean)
-
-  implicit val localTime: FromConf[LocalTime] = string.map(
-    LocalTime.parse(_, DateTimeFormatter.ISO_LOCAL_TIME)
-  )
 
   implicit val finiteDuration: FromConf[FiniteDuration] = FromConf.instance((c, p) =>
     FiniteDuration(c.getDuration(p).toNanos, TimeUnit.NANOSECONDS)
