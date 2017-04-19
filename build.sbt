@@ -1,14 +1,12 @@
 organization in ThisBuild := "io.estatico"
 
-lazy val root = applyDefaultSettings(project.in(file(".")))
+lazy val confide = applyDefaultSettings(project.in(file(".")))
   .settings(noPublishSettings)
-  .aggregate(core, macros, java8)
+  .aggregate(core, macros)
 
 lazy val core = confideModule("core")
 
 lazy val macros = confideModule("macros").dependsOn(core).settings(macroSettings)
-
-lazy val java8 = confideModule("java8").dependsOn(core)
 
 lazy val defaultScalacOptions = Seq(
   "-Xfatal-warnings",
