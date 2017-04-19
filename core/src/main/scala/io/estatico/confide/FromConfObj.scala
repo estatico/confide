@@ -1,6 +1,5 @@
 package io.estatico.confide
 
-import com.typesafe.config.{Config, ConfigObject}
 import shapeless.{LabelledGeneric, Lazy}
 
 trait FromConfObj[A] extends FromConf[A] {

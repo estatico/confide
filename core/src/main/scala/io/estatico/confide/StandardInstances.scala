@@ -2,7 +2,6 @@ package io.estatico.confide
 
 import java.util.concurrent.TimeUnit
 
-import com.typesafe.config.ConfigList
 import shapeless._
 import shapeless.labelled.FieldType
 

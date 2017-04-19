@@ -1,8 +1,5 @@
 package io.estatico.confide
 
-import com.typesafe.config.ConfigException.WrongType
-import com.typesafe.config.{Config, ConfigFactory, ConfigOrigin}
-
 import scala.util.control.NonFatal
 
 /** Type class for decoding values of type `A` from a `Config`. */
@@ -20,7 +17,7 @@ trait FromConf[A] {
     try {
       f(get(c, p))
     } catch {
-      case NonFatal(e) => throw new WrongType(
+      case NonFatal(e) => throw new WrongTypeConfigException(
         c.origin, s"Failed to get config at path $p: ${e.getMessage}", e
       )
     }
@@ -63,9 +60,11 @@ object FromConf {
     value: String
   ): A = {
     try {
-      f(ConfigFactory.parseString(s"_: $value"), "_")
+      f(ConfideFactory.raw.parseString(s"_: $value"), "_")
     } catch {
-      case e: WrongType => throw new WrongType(origin, s"Failed to parse value at $path", e)
+      case e: WrongTypeConfigException => throw new WrongTypeConfigException(
+        origin, s"Failed to parse value at $path", e
+      )
     }
   }
 
@@ -77,7 +76,8 @@ object FromConf {
     try {
       f(config, path)
     } catch {
-      case _: WrongType => parseValue(config.origin, path, f, config.getString(path))
+      case _: WrongTypeConfigException =>
+        parseValue(config.origin, path, f, config.getString(path))
     }
   }
 }

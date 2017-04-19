@@ -1,3 +1,5 @@
 package io.estatico
 
-package object confide extends StandardInstances
+package object confide
+  extends StandardInstances
+  with TypesafeImports

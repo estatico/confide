@@ -1,6 +1,6 @@
 package io.estatico.confide
 
-import com.typesafe.config.{Config, ConfigFactory}
+import com.typesafe.config.ConfigFactory
 
 /** Load configs directly given a `FromConf` instance. */
 object ConfideFactory {
@@ -14,4 +14,11 @@ object ConfideFactory {
   def parseString[A : FromConfObj](s: String): A = withConfig[A](ConfigFactory.parseString(s))
 
   def withConfig[A](config: Config)(implicit fc: FromConfObj[A]): A = fc.decodeObject(config.root)
+
+  /** Factory for getting Config values directly without decoding them. */
+  object raw {
+    def load(): Config = ConfigFactory.load()
+    def load(resourceBaseName: String): Config = ConfigFactory.load(resourceBaseName)
+    def parseString(s: String): Config = ConfigFactory.parseString(s)
+  }
 }
