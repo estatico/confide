@@ -29,10 +29,10 @@ trait FromConf[A] {
 
 object FromConf {
 
-  /** Find an instance of ConfGet for A. */
+  /** Find an instance of FromConf for A. */
   def apply[A](implicit ev: FromConf[A]): FromConf[A] = ev
 
-  /** Create a new instance of ConfGet for A. */
+  /** Create a new instance of FromConf for A. */
   def instance[A](f: (Config, String) => A): FromConf[A] = new FromConf[A] {
     override def get(config: Config, path: String): A = f(config, path)
   }
