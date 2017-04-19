@@ -1,5 +1,9 @@
 organization in ThisBuild := "io.estatico"
 
+lazy val root = applyDefaultSettings(project.in(file(".")))
+  .settings(noPublishSettings)
+  .aggregate(core, macros, java8)
+
 lazy val core = confideModule("core")
 
 lazy val macros = confideModule("macros").dependsOn(core).settings(macroSettings)
@@ -59,6 +63,12 @@ lazy val defaultPublishSettings = Seq(
   developers := List(
     Developer("caryrobbins", "Cary Robbins", "carymrobbins@gmail.com", url("http://caryrobbins.com"))
   )
+)
+
+lazy val noPublishSettings = Seq(
+  publish := (),
+  publishLocal := (),
+  publishArtifact := false
 )
 
 credentials ++= (

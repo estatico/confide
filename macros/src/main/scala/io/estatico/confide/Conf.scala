@@ -1,4 +1,4 @@
-package io.estatico.confide.macros
+package io.estatico.confide
 
 import scala.annotation.StaticAnnotation
 
@@ -9,5 +9,5 @@ import scala.annotation.StaticAnnotation
  * for their respective types.
  */
 class Conf extends StaticAnnotation {
-  def macroTransform(annottees: Any*): Any = macro ConfClassMacros.confClass
+  def macroTransform(annottees: Any*): Any = macro macros.ConfClassMacros.confClass
 }

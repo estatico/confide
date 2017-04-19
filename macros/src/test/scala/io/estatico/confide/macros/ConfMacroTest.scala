@@ -1,12 +1,12 @@
-package io.estatico.confide.macros
+package io.estatico.confide
+package macros
 
-import io.estatico.confide.ConfideFactory
 import org.scalatest.{Matchers, PropSpec}
 import org.scalatest.prop.PropertyChecks
 
 import scala.language.reflectiveCalls
 
-class ConfideTest extends PropSpec with PropertyChecks with Matchers {
+class ConfMacroTest extends PropSpec with PropertyChecks with Matchers {
 
   property("@Conf macro") {
 
