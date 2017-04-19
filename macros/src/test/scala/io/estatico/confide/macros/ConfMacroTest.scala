@@ -8,7 +8,7 @@ import scala.language.reflectiveCalls
 
 class ConfMacroTest extends PropSpec with PropertyChecks with Matchers {
 
-  property("@Conf macro") {
+  property("@Conf macro without generics") {
 
     @Conf case class Meal(breakfast: Breakfast)
     @Conf case class Breakfast(
@@ -40,5 +40,26 @@ class ConfMacroTest extends PropSpec with PropertyChecks with Matchers {
         Egg(scrambled = false)
       )
     ))
+  }
+
+  property("@Conf macro with generics") {
+
+    @Conf case class Root[M <: Meal](meal: M)
+
+    trait Meal
+    @Conf case class Breakfast(breakfast: String) extends Meal
+    @Conf case class Lunch(lunch: String) extends Meal
+
+    val breakfast = ConfideFactory.parseString[Root[Breakfast]]("""
+      meal { breakfast=british }
+    """)
+
+    breakfast shouldEqual Root(Breakfast("british"))
+
+    val lunch = ConfideFactory.parseString[Root[Lunch]]("""
+      meal { lunch=indian }
+    """)
+
+    lunch shouldEqual Root(Lunch("indian"))
   }
 }

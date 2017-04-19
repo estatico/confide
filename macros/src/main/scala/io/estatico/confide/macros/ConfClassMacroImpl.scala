@@ -40,10 +40,26 @@ private[confide] final class ConfClassMacros(val c: blackbox.Context) {
   private def isCaseClass(clsDef: ClassDef) = clsDef.mods.hasFlag(Flag.CASE)
 
   private def confGet(clsDef: ClassDef): Tree = {
-    if (clsDef.tparams.nonEmpty) c.abort(c.enclosingPosition, s"Type parameters are not supported")
     val typeName = clsDef.name
     val instName = TermName("fromConfObj" + typeName.decodedName)
-    q"implicit val $instName: $FromConfObjClass[$typeName] = $FromConfObjComp.derive[$typeName]"
+    if (clsDef.tparams.isEmpty) {
+      q"implicit val $instName: $FromConfObjClass[$typeName] = $FromConfObjComp.derive[$typeName]"
+    } else {
+      val tparams = clsDef.tparams
+      val tparamNames = tparams.map(_.name)
+      def mkImplicitParams(typeSymbol: TypeSymbol) =
+        tparamNames.map { tparamName =>
+          val paramName = c.freshName(tparamName.toTermName)
+          val paramType = tq"$typeSymbol[$tparamName]"
+          q"$paramName: $paramType"
+        }
+      val params = mkImplicitParams(FromConfObjClass)
+      val fullType = tq"$typeName[..$tparamNames]"
+      q"""
+        implicit def $instName[..$tparams](implicit ..$params): $FromConfObjClass[$fullType] =
+         $FromConfObjComp.derive[$fullType]
+      """
+    }
   }
 }
 
