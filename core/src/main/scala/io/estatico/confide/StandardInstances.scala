@@ -8,6 +8,7 @@ import shapeless.labelled.FieldType
 import scala.collection.JavaConverters._
 import scala.concurrent.duration.FiniteDuration
 
+/** Standard type class instances for FromConf and FromConfObj. */
 trait StandardInstances {
 
   implicit val hnil: FromConfObj[HNil] = FromConfObj.instance(_ => HNil)

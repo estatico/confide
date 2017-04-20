@@ -15,7 +15,7 @@ private[confide] final class ConfClassMacros(val c: blackbox.Context) {
       q"""
         $clsDef
         object ${clsDef.name.toTermName} {
-          ${confGet(clsDef)}
+          ${fromConfObjInstance(clsDef)}
         }
       """
 
@@ -27,7 +27,7 @@ private[confide] final class ConfClassMacros(val c: blackbox.Context) {
         $clsDef
         object $objName extends { ..$objEarlyDefs } with ..$objParents { $objSelf =>
           ..$objDefs
-          ..${confGet(clsDef)}
+          ${fromConfObjInstance(clsDef)}
         }
       """
 
@@ -39,7 +39,7 @@ private[confide] final class ConfClassMacros(val c: blackbox.Context) {
 
   private def isCaseClass(clsDef: ClassDef) = clsDef.mods.hasFlag(Flag.CASE)
 
-  private def confGet(clsDef: ClassDef): Tree = {
+  private def fromConfObjInstance(clsDef: ClassDef): Tree = {
     val typeName = clsDef.name
     val instName = TermName("fromConfObj" + typeName.decodedName)
     if (clsDef.tparams.isEmpty) {

@@ -90,7 +90,7 @@ def applyDefaultSettings(project: Project) = project.settings(
 def confideModule(path: String) = {
   // Convert path from lisp-case to camelCase
   val id = path.split("-").reduce(_ + _.capitalize)
-  // Convert path from list-case to "Confide with spaces"
+  // Convert path from list-case to "space case"
   val docName = path.replace('-', ' ')
   // Set default and module-specific settings.
   applyDefaultSettings(Project(id, file(path))).settings(

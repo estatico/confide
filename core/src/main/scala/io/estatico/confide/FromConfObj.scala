@@ -2,6 +2,10 @@ package io.estatico.confide
 
 import shapeless.{LabelledGeneric, Lazy}
 
+/**
+ * Type class for decoding a ConfigObject directly.
+ * Generally useful for decoding case classes from configs.
+ */
 trait FromConfObj[A] extends FromConf[A] {
 
   def decodeObject(o: ConfigObject): A
@@ -11,8 +15,10 @@ trait FromConfObj[A] extends FromConf[A] {
 
 object FromConfObj {
 
+  /** Find an instance of FromConfObj for A. */
   def apply[A](implicit ev: FromConfObj[A]): FromConfObj[A] = ev
 
+  /** Create a new instance of FromConfObj for A. */
   def instance[A](f: ConfigObject => A): FromConfObj[A] = new FromConfObj[A] {
     override def decodeObject(o: ConfigObject): A = f(o)
   }
