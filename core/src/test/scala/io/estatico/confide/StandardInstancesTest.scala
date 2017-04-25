@@ -27,6 +27,11 @@ class StandardInstancesTest extends FlatSpec with GeneratorDrivenPropertyChecks 
     assert(decode[FiniteDuration]("-2h") == (-2).hours)
   }
 
+  testWith[Option[String]] in {
+    assert(decode[Option[String]]("eggs") == Some("eggs"))
+    assert(FromConf[Option[String]].get(ConfideFactory.raw.parseString(""), "x") == None)
+  }
+
   private def testWith[A : Manifest]: ResultOfStringPassedToVerb = {
     val man = implicitly[Manifest[A]]
     s"FromConf[$man]" should s"decode $man values"
