@@ -11,7 +11,7 @@ private[confide] final class ConfClassMacros(val c: blackbox.Context) {
   import c.universe._
 
   def confClass(annottees: Tree*): Tree = annottees match {
-    case List(clsDef: ClassDef) if isCaseClass(clsDef) =>
+    case List(clsDef: ClassDef) =>
       q"""
         $clsDef
         object ${clsDef.name.toTermName} {
@@ -22,7 +22,7 @@ private[confide] final class ConfClassMacros(val c: blackbox.Context) {
     case List(
     clsDef: ClassDef,
     q"object $objName extends { ..$objEarlyDefs } with ..$objParents { $objSelf => ..$objDefs }"
-    ) if isCaseClass(clsDef) =>
+    ) =>
       q"""
         $clsDef
         object $objName extends { ..$objEarlyDefs } with ..$objParents { $objSelf =>
@@ -36,8 +36,6 @@ private[confide] final class ConfClassMacros(val c: blackbox.Context) {
 
   private val FromConfObjClass = typeOf[FromConfObj[_]].typeSymbol.asType
   private val FromConfObjComp = FromConfObjClass.companion
-
-  private def isCaseClass(clsDef: ClassDef) = clsDef.mods.hasFlag(Flag.CASE)
 
   private def fromConfObjInstance(clsDef: ClassDef): Tree = {
     val typeName = clsDef.name
