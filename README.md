@@ -4,6 +4,38 @@
 
 Automatic configuration decoding for Scala
 
+## Setup
+
+Maven:
+
+To be able to use the @Conf macro, you'll need the Paradise compiler plugin. Example:
+```xml
+<pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.scala-tools</groupId>
+                    <artifactId>maven-scala-plugin</artifactId>
+                    <version>${scala.plugin.version}</version>
+                    <configuration>
+                        <compilerPlugins>
+                            <compilerPlugin>
+                                <groupId>org.scalamacros</groupId>
+                                <artifactId>paradise_${scala.version}</artifactId>
+                                <version>2.1.0</version>
+                            </compilerPlugin>
+                        </compilerPlugins>
+                    </configuration>
+                </plugin>
+            .
+            .
+            .
+            </plugins>
+.
+.
+.
+</pluginManagement>
+```
+
 ## Usage
 
 Given the configuration file below -
