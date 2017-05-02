@@ -6,33 +6,67 @@ Automatic configuration decoding for Scala
 
 ## Setup
 
-Maven:
+### SBT
 
-To be able to use the @Conf macro, you'll need the Paradise compiler plugin. Example:
+```sbt
+val confideVersion = "0.0.1"
+
+libraryDependencies ++= Seq(
+  "io.estatico" %% "confide-core" % confideVersion,
+  "io.estatico" %% "confide-macros" % confideVersion,
+)
+```
+
+To be able to use the `@Conf` macro, you'll need the Paradise compiler plugin.
+
+```sbt
+addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full),
+```
+
+### Maven
+
+```xml
+<properties>
+  ...
+  <confide.version>0.0.1</scala.version>
+</properties>
+...
+<dependencies>
+  ...
+  <dependency>
+    <groupId>io.estatico</groupId>
+    <artifactId>confide-core_${scala.binaryVersion}</artifactId>
+    <version>${confide.version}</version>
+  </dependency>
+  <dependency>
+    <groupId>io.estatico</groupId>
+    <artifactId>confide-macros_${scala.binaryVersion}</artifactId>
+    <version>${confide.version}</version>
+  </dependency>
+</dependencies>
+```
+
+To be able to use the `@Conf` macro, you'll need the Paradise compiler plugin.
+
 ```xml
 <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.scala-tools</groupId>
-                    <artifactId>maven-scala-plugin</artifactId>
-                    <version>${scala.plugin.version}</version>
-                    <configuration>
-                        <compilerPlugins>
-                            <compilerPlugin>
-                                <groupId>org.scalamacros</groupId>
-                                <artifactId>paradise_${scala.version}</artifactId>
-                                <version>2.1.0</version>
-                            </compilerPlugin>
-                        </compilerPlugins>
-                    </configuration>
-                </plugin>
-            .
-            .
-            .
-            </plugins>
-.
-.
-.
+  ...
+  <plugins>
+    <plugin>
+      <groupId>org.scala-tools</groupId>
+      <artifactId>maven-scala-plugin</artifactId>
+      <version>${scala.plugin.version}</version>
+      <configuration>
+        <compilerPlugins>
+          <compilerPlugin>
+            <groupId>org.scalamacros</groupId>
+            <artifactId>paradise_${scala.version}</artifactId>
+            <version>2.1.0</version>
+          </compilerPlugin>
+        </compilerPlugins>
+      </configuration>
+    </plugin>
+  </plugins>
 </pluginManagement>
 ```
 
