@@ -1,6 +1,8 @@
 # Confide
 
 [![Build Status](https://travis-ci.org/estatico/confide.svg?branch=master)](https://travis-ci.org/estatico/confide)
+[![Gitter](https://img.shields.io/badge/gitter-join%20chat-green.svg)](https://gitter.im/estatico/confide)
+[![Maven Central](https://img.shields.io/maven-central/v/io.estatico/confide-core_2.12.svg)](https://maven-badges.herokuapp.com/maven-central/io.estatico/confide-core_2.12)
 
 Automatic configuration decoding for Scala
 
