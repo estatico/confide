@@ -2,7 +2,28 @@ language: scala
 
 scala:
   - 2.11.8
-  - 2.12.1
 
 jdk:
+  - oraclejdk7
   - oraclejdk8
+
+matrix:
+  include:
+  - scala: 2.12.1
+    jdk: oraclejdk8
+
+cache:
+  directories:
+    - $HOME/.ivy2/cache
+    - $HOME/.sbt/boot
+
+script:
+  - sbt ++$TRAVIS_SCALA_VERSION clean;
+  - if [[ "$TRAVIS_SCALA_VERSION" == 2.11.* ]]; then
+      sbt update;
+    fi
+  - sbt ++$TRAVIS_SCALA_VERSION test
+  # See http://www.scala-sbt.org/0.13/docs/Travis-CI-with-sbt.html
+  # Tricks to avoid unnecessary cache updates
+  - find $HOME/.sbt -name "*.lock" | xargs rm
+  - find $HOME/.ivy2 -name "ivydata-*.properties" | xargs rm
