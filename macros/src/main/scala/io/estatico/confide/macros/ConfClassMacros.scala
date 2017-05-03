@@ -1,11 +1,10 @@
 package io.estatico.confide.macros
 
 import io.estatico.confide.FromConfObj
-import macrocompat.bundle
 
 import scala.reflect.macros.blackbox
 
-@bundle
+@macrocompat.bundle
 private[confide] final class ConfClassMacros(val c: blackbox.Context) {
 
   import c.universe._
@@ -20,8 +19,8 @@ private[confide] final class ConfClassMacros(val c: blackbox.Context) {
       """
 
     case List(
-    clsDef: ClassDef,
-    q"object $objName extends { ..$objEarlyDefs } with ..$objParents { $objSelf => ..$objDefs }"
+      clsDef: ClassDef,
+      q"object $objName extends { ..$objEarlyDefs } with ..$objParents { $objSelf => ..$objDefs }"
     ) =>
       q"""
         $clsDef

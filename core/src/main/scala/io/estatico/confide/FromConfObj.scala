@@ -4,7 +4,8 @@ import shapeless.{LabelledGeneric, Lazy}
 
 /**
  * Type class for decoding a ConfigObject directly.
- * Generally useful for decoding case classes from configs.
+ * Generally useful for decoding case classes and other types which have
+ * a `LabelledGeneric` instance from configs.
  */
 trait FromConfObj[A] extends FromConf[A] {
 
