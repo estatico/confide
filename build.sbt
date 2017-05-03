@@ -1,3 +1,5 @@
+import ReleaseTransformations._
+
 organization in ThisBuild := "io.estatico"
 
 lazy val confide = applyDefaultSettings(project.in(file(".")))
@@ -40,6 +42,20 @@ lazy val macroSettings = Seq(
 lazy val defaultPublishSettings = Seq(
   releaseCrossBuild := true,
   releasePublishArtifactsAction := PgpKeys.publishSigned.value,
+  releaseProcess := Seq[ReleaseStep](
+    checkSnapshotDependencies,
+    inquireVersions,
+    runClean,
+    runTest,
+    setReleaseVersion,
+    commitReleaseVersion,
+    tagRelease,
+    publishArtifacts,
+    setNextVersion,
+    commitNextVersion,
+    ReleaseStep(action = Command.process("sonatypeReleaseAll", _)),
+    pushChanges
+  ),
   homepage := Some(url("https://github.com/estatico/confide")),
   licenses := Seq("Apache 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
   publishMavenStyle := true,
