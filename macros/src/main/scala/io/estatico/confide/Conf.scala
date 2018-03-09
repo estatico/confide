@@ -16,6 +16,9 @@ import scala.annotation.StaticAnnotation
  * a `shapeless.LabelledGeneric` can be derived and, thus, a `FromConfObj` for the
  * annotated case class.
  */
-class Conf extends StaticAnnotation {
+class Conf(
+  debug: Boolean = false,
+  debugRaw: Boolean = false
+) extends StaticAnnotation {
   def macroTransform(annottees: Any*): Any = macro macros.ConfClassMacros.confClass
 }
