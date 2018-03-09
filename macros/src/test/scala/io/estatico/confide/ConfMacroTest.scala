@@ -29,7 +29,7 @@ class ConfMacroTest extends FlatSpec with Matchers {
     ))
   }
 
-  it should "work with generics" in {
+  it should "work with type params" in {
     trait Meal
     @Conf case class Breakfast(breakfast: String) extends Meal
     @Conf case class Lunch(lunch: String) extends Meal
@@ -42,5 +42,12 @@ class ConfMacroTest extends FlatSpec with Matchers {
     ConfideFactory.parseString[Root[Lunch]]("""
       meal { lunch=indian }
     """) shouldEqual Root(Lunch("indian"))
+  }
+
+  it should "work for non-object type params" in {
+    @Conf case class Foo[A](a: A)
+    ConfideFactory.parseString[Foo[String]]("""
+      a=bar
+    """) shouldEqual Foo("bar")
   }
 }

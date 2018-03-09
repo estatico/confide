@@ -1,7 +1,6 @@
 package io.estatico.confide.macros
 
-import io.estatico.confide.FromConfObj
-
+import io.estatico.confide.{FromConf, FromConfObj}
 import scala.reflect.macros.blackbox
 
 @macrocompat.bundle
@@ -33,6 +32,7 @@ private[confide] final class ConfClassMacros(val c: blackbox.Context) {
     case _ => c.abort(c.enclosingPosition, s"Only case classes are supported.")
   }
 
+  private val FromConfClass = typeOf[FromConf[_]].typeSymbol.asType
   private val FromConfObjClass = typeOf[FromConfObj[_]].typeSymbol.asType
   private val FromConfObjComp = FromConfObjClass.companion
 
@@ -50,7 +50,7 @@ private[confide] final class ConfClassMacros(val c: blackbox.Context) {
           val paramType = tq"$typeSymbol[$tparamName]"
           q"$paramName: $paramType"
         }
-      val params = mkImplicitParams(FromConfObjClass)
+      val params = mkImplicitParams(FromConfClass)
       val fullType = tq"$typeName[..$tparamNames]"
       q"""
         implicit def $instName[..$tparams](implicit ..$params): $FromConfObjClass[$fullType] =
