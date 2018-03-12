@@ -11,7 +11,7 @@ Automatic configuration decoding for Scala
 ### SBT
 
 ```sbt
-val confideVersion = "0.0.2"
+val confideVersion = "0.0.3"
 
 libraryDependencies ++= Seq(
   "io.estatico" %% "confide-core" % confideVersion,
@@ -30,7 +30,7 @@ addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.fu
 ```xml
 <properties>
   ...
-  <confide.version>0.0.2</confide.version>
+  <confide.version>0.0.3</confide.version>
 </properties>
 ...
 <dependencies>
