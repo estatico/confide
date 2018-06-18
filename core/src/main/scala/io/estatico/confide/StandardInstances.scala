@@ -49,6 +49,8 @@ trait StandardInstances {
   implicit def list[A : FromConf]: FromConf[List[A]] = iter[A].map(_.toList)
 
   implicit def vector[A : FromConf]: FromConf[Vector[A]] = iter[A].map(_.toVector)
+  
+  implicit def set[A : FromConf]: FromConf[Set[A]] = iter[A].map(_.toSet)
 
   implicit def fromConfOption[A](implicit ev: FromConf[A]): FromConf[Option[A]] = {
     FromConf.instance((c, p) =>
